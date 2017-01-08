@@ -1,6 +1,7 @@
 package me.catallena.mcaholic;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,11 +54,11 @@ public class pluginMain extends JavaPlugin {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.sendMessage(ChatColor.BLUE + "Music System is" + ChatColor.GREEN + ChatColor.BOLD + " enabled.");
 			getMusicThread().getSongPlayer().addPlayer(p);
+			getConfig().set("Players." + p.getName() + ".music", "true");
 			saveConfig();
 			p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 			}
 	}
-
 
 	public void onDisable() {
 		pluginMain.getMusicThread().getSongPlayer().setPlaying(false);
