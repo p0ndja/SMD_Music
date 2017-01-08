@@ -31,10 +31,10 @@ public class MusicThread implements Runnable {
 			String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
 			String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
 			if (title.isEmpty()) {
-				title = "§7Unknown Song§r";
+				title = ChatColor.GRAY+"Unknown Song"+ChatColor.RESET;
 			}
 			if (author.isEmpty()) {
-				author = "§7Unknown Author§r";
+				author = ChatColor.GRAY+"Unknown Author"+ChatColor.RESET;
 			}
 			ActionBar music = new ActionBar(ChatColor.AQUA + "Song: " + ChatColor.YELLOW + title + ChatColor.WHITE + " - " + ChatColor.GREEN + author);
 			music.sendToAll();
