@@ -44,6 +44,15 @@ public class playerCommands implements CommandExecutor {
 					pluginMain.getMusicThread().getSongPlayer().addPlayer(p);
 					pl.getConfig().set("Players." + p.getName() + ".music", "true");
 					pl.saveConfig();
+					String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
+					String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
+					if (title.isEmpty()) {
+						title = ChatColor.GRAY+"Unknown Song"+ChatColor.RESET;
+					}
+					if (author.isEmpty()) {
+						author = ChatColor.GRAY+"Unknown Author"+ChatColor.RESET;
+					}
+					p.sendMessage(ChatColor.AQUA + "Song: " + ChatColor.YELLOW + title + ChatColor.WHITE + " - " + ChatColor.GREEN + author);
 				} else {
 					if (pl.getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
 						p.sendMessage(ChatColor.GRAY + "You have" + ChatColor.RED + " Mute Music!");

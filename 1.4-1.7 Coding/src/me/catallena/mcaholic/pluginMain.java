@@ -62,7 +62,7 @@ public class pluginMain extends JavaPlugin {
 	public void onDisable() {
 		pluginMain.getMusicThread().getSongPlayer().setPlaying(false);
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(ChatColor.BLUE + "Music System [Action Bar EDITION] is" + ChatColor.RED + ChatColor.BOLD + " disabled");
+			p.sendMessage(ChatColor.BLUE + "Music System is" + ChatColor.RED + ChatColor.BOLD + " disabled");
 			p.playSound(p.getLocation(), Sound.NOTE_PLING, 10, 0);
 			getMusicThread().getSongPlayer().removePlayer(p);
 		}
