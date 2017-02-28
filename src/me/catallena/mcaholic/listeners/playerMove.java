@@ -7,9 +7,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import me.catallena.mcaholic.pluginMain;
 import org.bukkit.event.Listener;
 
+
 public class playerMove implements Listener {
 
-	pluginMain pl;
+	public static pluginMain pl;
 
 	public playerMove(pluginMain pl) {
 		this.pl = pl;
@@ -17,12 +18,7 @@ public class playerMove implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		Player p = e.getPlayer();		
-		if (pl.getConfig().getString("Players." + p.getName() + ".music") == "true") {
-			pluginMain.getMusicThread().getSongPlayer().addPlayer(p);
-		} else {
-			pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
-		}
+
 	}
 
 }
