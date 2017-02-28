@@ -38,7 +38,7 @@ public class playerCommands implements CommandExecutor {
 					if (pl.getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("false")) {
 						p.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "You have" + ChatColor.GREEN + " Unmute Music!");
 						p.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type '/music' again to " + ChatColor.RED + "Mute.");
-						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 0);
+						p.playSound(p.getLocation(), Sound.ENTITY_ITEMFRAME_REMOVE_ITEM, 1, 1);
 						// p.playSound(p.getLocation(), Sound.<SOUND>, <VOLUME>,
 						// <PITCH>);
 						pluginMain.getMusicThread().getSongPlayer().addPlayer(p);
@@ -48,7 +48,7 @@ public class playerCommands implements CommandExecutor {
 						if (pl.getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
 							p.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "You have" + ChatColor.RED + " Mute Music!");
 							p.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type '/music' again to " + ChatColor.GREEN + "Unmute.");
-							p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 0, 0);
+							p.playSound(p.getLocation(), Sound.ENTITY_ITEMFRAME_ADD_ITEM, 1, 1);
 							pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
 							pl.getConfig().set("Players." + p.getName() + ".music", "false");
 							pl.saveConfig();

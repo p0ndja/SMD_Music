@@ -1,7 +1,7 @@
-name: Music
+name: SMDMusic
 main: me.catallena.mcaholic.pluginMain
 description: Make your own song and Share to player in server!
-version: 1.1
+version: 0.1.4
 author: [Catallena_, PondJa]
 commands:
   musicadmin:

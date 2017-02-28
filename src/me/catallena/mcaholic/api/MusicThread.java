@@ -31,12 +31,14 @@ public class MusicThread implements Runnable {
 			String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
 			String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
 			if (title.isEmpty()) {
-				title = ChatColor.GRAY+"Unknown Song"+ChatColor.RESET;
+				title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
 			}
 			if (author.isEmpty()) {
-				author = ChatColor.GRAY+"Unknown Author"+ChatColor.RESET;
+				author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 			}
-			ActionBar music = new ActionBar(ChatColor.AQUA + "Song: " + ChatColor.YELLOW + title + ChatColor.WHITE + " - " + ChatColor.GREEN + author);
+			ActionBar music = new ActionBar(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+					+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
+					+ ChatColor.GOLD + ChatColor.BOLD + author);
 			music.sendToAll();
 
 			if (!songPlayer.isPlaying()) {
@@ -60,6 +62,8 @@ public class MusicThread implements Runnable {
 		List<Song> songs = new ArrayList<Song>();
 
 		pluginMain.getInstance().getLogger().info("Loading songs from " + songFolder.getPath());
+		Bukkit.broadcastMessage(
+				ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Loading songs from " + songFolder.getPath());
 
 		for (File file : files) {
 			Song song = null;
@@ -77,6 +81,8 @@ public class MusicThread implements Runnable {
 		}
 
 		pluginMain.getInstance().getLogger().info("Loaded " + songs.size() + " songs!");
+		Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Loaded " + ChatColor.YELLOW
+				+ songs.size() + ChatColor.GRAY + " songs!");
 
 		loadedSongs = songs.toArray(loadedSongs);
 
@@ -100,7 +106,7 @@ public class MusicThread implements Runnable {
 		Random rand = new Random();
 		int r = rand.nextInt(30);
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			songPlayer.addPlayer(p); 
+			songPlayer.removePlayer(p); //ORIGINAL IS addPlayer
 		}
 		songPlayer.setPlaying(false);
 		nextSong(r);

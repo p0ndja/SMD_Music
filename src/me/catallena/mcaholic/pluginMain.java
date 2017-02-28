@@ -27,6 +27,7 @@ public class pluginMain extends JavaPlugin {
 	public static HashMap<String, Byte> playerVolume = new HashMap<String, Byte>();
 
 	public void onEnable() {
+		Bukkit.broadcastMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.GREEN + ChatColor.BOLD + "Enable");
 		instance = this;
 		
 		mt = new MusicThread(getSongFolder());
@@ -41,7 +42,6 @@ public class pluginMain extends JavaPlugin {
 		regCmds();
 		regEvents();
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.GREEN + ChatColor.BOLD + "Enable");
 			getMusicThread().getSongPlayer().addPlayer(p);
 			getConfig().set("Players." + p.getName() + ".music", "true");
 			saveConfig();
