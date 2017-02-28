@@ -20,19 +20,23 @@ import me.catallena.mcaholic.listeners.playerJoinLeft;
 import me.catallena.mcaholic.listeners.playerMove;
 
 public class pluginMain extends JavaPlugin {
-		
+
 	public static MusicThread mt;
-	public static pluginMain instance;	
+	public static pluginMain instance;
 	public static HashMap<String, ArrayList<SongPlayer>> playingSongs = new HashMap<String, ArrayList<SongPlayer>>();
 	public static HashMap<String, Byte> playerVolume = new HashMap<String, Byte>();
 
+	public static DelayLoadConfig delayLoadConfig = null;
+	public static Thread delayLoadConnfig_Thread = null;
+	
 	public void onEnable() {
-		Bukkit.broadcastMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.GREEN + ChatColor.BOLD + "Enable");
+		Bukkit.broadcastMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.GREEN
+				+ ChatColor.BOLD + "Enable");
 		instance = this;
-		
+
 		mt = new MusicThread(getSongFolder());
-		
-		if(mt.getSongs().length == 0){
+
+		if (mt.getSongs().length == 0) {
 			getLogger().warning("Alert! No songs found.");
 		} else {
 			Bukkit.getScheduler().runTaskTimer(this, mt, 0, 20);
@@ -46,16 +50,28 @@ public class pluginMain extends JavaPlugin {
 			getConfig().set("Players." + p.getName() + ".music", "true");
 			saveConfig();
 			p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-			}
+		}
+		
+		
+		delayLoadConfig = new DelayLoadConfig();
+		delayLoadConnfig_Thread = new Thread(delayLoadConfig);
+		delayLoadConnfig_Thread.start();
+		
+		
 	}
 
 	public void onDisable() {
 		pluginMain.getMusicThread().getSongPlayer().setPlaying(false);
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.RED + ChatColor.BOLD + "Disable");
+			p.sendMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "Music System: " + ChatColor.RED
+					+ ChatColor.BOLD + "Disable");
 			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 10, 0);
 			getMusicThread().getSongPlayer().removePlayer(p);
 		}
+		
+		delayLoadConfig.setRunning(false);
+		
+		
 	}
 
 	public void regCmds() {
@@ -70,7 +86,8 @@ public class pluginMain extends JavaPlugin {
 	}
 
 	public static boolean isReceivingSong(Player p) {
-		return ((pluginMain.playingSongs.get(p.getName()) != null) && (!pluginMain.playingSongs.get(p.getName()).isEmpty()));
+		return ((pluginMain.playingSongs.get(p.getName()) != null)
+				&& (!pluginMain.playingSongs.get(p.getName()).isEmpty()));
 	}
 
 	public static void stopPlaying(Player p) {
@@ -94,7 +111,7 @@ public class pluginMain extends JavaPlugin {
 		}
 		return b;
 	}
-	
+
 	public static pluginMain getInstance() {
 		return instance;
 	}
@@ -102,9 +119,9 @@ public class pluginMain extends JavaPlugin {
 	public static MusicThread getMusicThread() {
 		return pluginMain.mt;
 	}
-	
-	public static File getSongFolder(){
+
+	public static File getSongFolder() {
 		return new File(getInstance().getDataFolder(), "songs/");
 	}
-	
+
 }
