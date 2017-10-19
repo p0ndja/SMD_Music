@@ -1,9 +1,12 @@
-package me.catallena.mcaholic;
+package me.palapon2545.music;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
-import me.catallena.mcaholic.listeners.playerMove;
+import me.palapon2545.music.listeners.playerMove;
 
 public class DelayLoadConfig implements Runnable {
 
@@ -22,7 +25,7 @@ public class DelayLoadConfig implements Runnable {
 
 		while (isRunning == true) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

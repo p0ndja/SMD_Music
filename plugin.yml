@@ -1,27 +1,64 @@
 name: SMDMusic
-main: me.catallena.mcaholic.pluginMain
+main: me.palapon2545.music.pluginMain
 description: Make your own song and Share to player in server!
-version: 0.1.4
-author: [Catallena_, PondJa]
+version: 1.0.2
+authors: [SMD_SSG_PJ, Catallena_, DDLoveDew]
+website: https://github.com/palapon2545/SMD_Music
 commands:
   musicadmin:
        description: See list of helping for admin (OP)
+       permission: music.admin
   musicadmin play:
        description: Play Selected Song (OP)
-       usage: type /musicadmin play <song> (USE _ FOR SPACING)
+       usage: /musicadmin play <song> (USE _ FOR SPACING)
+       permission: music.admin
   musicadmin random:
        description: Play Random Song (OP)
-       usage: type /musicadmin random
+       usage: /musicadmin random
+       permission: music.admin
   musicadmin list:
        description: List of available song(s) (OP)
-       usage: type /musicadmin list
+       usage: /musicadmin list
+       permission: music.admin
   musicadmin reload:
-       description: Re-loading song(s) from folder (OP)
-       usage: type /musicadmin reload
+       description: Reload song from folder (OP) [CURRENTLY DISABLE - BUG - IF YOU CAN CONTINUE, CONTACT ME AT WEBSITE LINK!]
+       usage: /musicadmin reload
+       permission: music.admin
+  musicadmin forceunmute:
+       description: Force [player] to unmute
+       usage: /musicadmin forceunmute [player]
+       permission: music.admin
+  musicadmin forcemute:
+       description: Force [player] to mute
+       usage: /musicadmin forcemute [player]
+       permission: music.admin
+  musicadmin forceallunmute:
+       description: Force all online player to unmute
+       usage: /musicadmin forceallunmute
+       permission: music.admin
+  musicadmin forceallmute:
+       description: Force all online player to mute
+       usage: /musicadmin forceallmute
+       permission: music.admin
   music:
        description: Toggle between Mute and Unmute Music
-       usage: type /music
+       usage: /music
+  music mute:
+       description: Mute Music
+       usage: /music mute
+  music unmute:
+       description: Unmute Music
+       usage: /music unmute
+  music m:
+       description: Mute Music [Shortcut of /music mute]
+       usage: /music m
+  music u:
+       description: Unmute Music [Shortcut of /music unmute]
+       usage: /music u
+  music info:
+       description: Show currently song's information
+       usage: /music info
   music status:
        description: Check that player mute or unmute
-       usage: type /music status
+       usage: /music status
   
