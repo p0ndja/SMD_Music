@@ -32,7 +32,8 @@ public class playerCommands implements CommandExecutor {
 		if (cmd.getName().equalsIgnoreCase("music") || cmd.getName().equalsIgnoreCase("SMDMusic:music")) {
 			if (sender instanceof Player) {
 				if (args.length == 0) {
-					if (pl.getConfig().getString("Players." + player.getName() + ".music").equalsIgnoreCase("false")) {
+					String valve = pl.getConfig().getString("Players." + player.getName() + ".music");
+					if (valve != null && valve.equalsIgnoreCase("false")) {
 						player.sendMessage(ChatColor.WHITE + "You " + ChatColor.GREEN + ChatColor.BOLD + "UNMUTED "
 								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
 								+ ChatColor.BOLD + "/music " + ChatColor.YELLOW + "again to " + ChatColor.RED

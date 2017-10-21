@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import me.palapon2545.music.pluginMain;
 import me.palapon2545.music.NoteblockAPI.NBSDecoder;
@@ -30,21 +29,7 @@ public class MusicThread implements Runnable {
 	public void run() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 
-			/*
-			 * String title =
-			 * pluginMain.getMusicThread().getCurrentSong().getTitle(); String
-			 * author =
-			 * pluginMain.getMusicThread().getCurrentSong().getAuthor(); if
-			 * (title.isEmpty()) { title = ChatColor.GRAY + "Unknown Song" +
-			 * ChatColor.RESET; } if (author.isEmpty()) { author =
-			 * ChatColor.GRAY + "Unknown Author" + ChatColor.RESET; } ActionBar
-			 * music = new ActionBar(ChatColor.WHITE + "[" + ChatColor.YELLOW +
-			 * "Song" + ChatColor.WHITE + "]" + ChatColor.GRAY + ": " +
-			 * ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE +
-			 * " - " + ChatColor.GOLD + ChatColor.BOLD + author);
-			 * music.sendToAll();
-			 */ // This code will repeat senting song information every 2 second
-				// that make song alway display in actionbar
+			// add action bar here to display song info forever (loop ever 2 second)
 			if (!songPlayer.isPlaying()) {
 				randomSong();
 				songPlayer.addPlayer(player);
@@ -83,7 +68,7 @@ public class MusicThread implements Runnable {
 
 			songs.add(song);
 		}
-		
+
 		if ((long) songs.size() < 1) {
 			Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("SMDMusic"));
 		}
@@ -113,21 +98,19 @@ public class MusicThread implements Runnable {
 		}
 		songPlayer.setPlaying(false);
 		nextSong(r);
-		//
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
-			String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
-			if (title.isEmpty()) {
-				title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
-			}
-			if (author.isEmpty()) {
-				author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
-			}
-			ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
-					+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
-					+ ChatColor.GOLD + ChatColor.BOLD + author);
+
+		String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
+		String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
+		if (title.isEmpty()) {
+			title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
 		}
-		//
+		if (author.isEmpty()) {
+			author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
+		}
+		ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+				+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
+				+ ChatColor.GOLD + ChatColor.BOLD + author);
+
 	}
 
 	public boolean trySetSong(String songName) {
@@ -137,19 +120,19 @@ public class MusicThread implements Runnable {
 				songPlayer.setPlaying(false);
 				songPlayer = new RadioSongPlayer(song);
 				songPlayer.setPlaying(true);
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
-					String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
-					if (title.isEmpty()) {
-						title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
-					}
-					if (author.isEmpty()) {
-						author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
-					}
-					ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
-							+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
-							+ ChatColor.GOLD + ChatColor.BOLD + author);
+
+				String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
+				String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
+				if (title.isEmpty()) {
+					title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
 				}
+				if (author.isEmpty()) {
+					author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
+				}
+				ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+						+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
+						+ ChatColor.GOLD + ChatColor.BOLD + author);
+
 				return true;
 			}
 		}

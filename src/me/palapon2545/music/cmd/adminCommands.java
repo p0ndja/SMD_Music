@@ -78,9 +78,6 @@ public class adminCommands implements CommandExecutor {
 					    plugin.onEnable();
 						
 					}
-					if (args[0].equalsIgnoreCase("test")) {
-						Bukkit.getServer().getScheduler().cancelAllTasks();
-					}
 					if (args[0].equalsIgnoreCase("forcemute")) {
 						if (args.length == 2) {
 							if (Bukkit.getServer().getPlayer(args[1]) != null) {
