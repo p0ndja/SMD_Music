@@ -1,6 +1,7 @@
 package me.palapon2545.music.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import org.bukkit.Bukkit;
@@ -107,10 +108,12 @@ public class MusicThread implements Runnable {
 		if (author.isEmpty()) {
 			author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 		}
-		ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
-				+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
-				+ ChatColor.GOLD + ChatColor.BOLD + author);
-
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			ActionBarAPI.send(p,
+					ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]" + ChatColor.GRAY + ": "
+							+ ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - " + ChatColor.GOLD
+							+ ChatColor.BOLD + author);
+		}
 	}
 
 	public boolean trySetSong(String songName) {
@@ -123,12 +126,14 @@ public class MusicThread implements Runnable {
 
 				String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
 				String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
+
 				if (title.isEmpty()) {
 					title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
 				}
 				if (author.isEmpty()) {
 					author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 				}
+
 				ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
 						+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
 						+ ChatColor.GOLD + ChatColor.BOLD + author);

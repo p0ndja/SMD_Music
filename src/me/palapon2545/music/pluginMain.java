@@ -7,6 +7,8 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,10 +31,15 @@ public class pluginMain extends JavaPlugin {
 
 	public void onEnable() {
 		File userfiles;
+		File lyricfiles;
         try {
             userfiles = new File(getDataFolder() + File.separator + "/songs/");
+			lyricfiles = new File(getDataFolder(), File.separator + "lyric/");
             if(!userfiles.exists()){
                 userfiles.mkdirs();
+            }
+            if(!lyricfiles.exists()) {
+            	lyricfiles.mkdirs();
             }
         } catch(SecurityException e) {
             return;
@@ -51,25 +58,52 @@ public class pluginMain extends JavaPlugin {
 		}
 		regCmds();
 		regEvents();
+		
 		BukkitScheduler s = getServer().getScheduler();
 		s.scheduleSyncRepeatingTask(this, new Runnable() {
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getOnlinePlayers()) {
-
 					if (getConfig().getString("Players." + p.getName() + ".music") == "true") {
 						getMusicThread().getSongPlayer().addPlayer(p);
 					} else {
 						getMusicThread().getSongPlayer().removePlayer(p);
 					}
+				}
+				String currentSong = mt.getCurrentSong().getTitle();
+				short length = mt.getCurrentSong().getLength();
+				short nowLength = mt.getSongPlayer().getTick();
+				float speed = mt.getCurrentSong().getSpeed();
+				
+				long lengthSecond = ((long) length) / ((long) speed);
+				long nowLengthSecond = ((long) nowLength) / ((long) speed);
 
+				File lyricsFolder = new File(getDataFolder(), File.separator + "lyric/");
+				File lyricsFile = new File(lyricsFolder, File.separator + currentSong + ".txt");
+				if (lyricsFile.exists()) {
+					FileConfiguration lyricsData = YamlConfiguration.loadConfiguration(lyricsFile);
+					String lyricDisplay = "";
+					String lyricMessage = lyricsData.getString(nowLengthSecond + "");
+					
+					if (!lyricMessage.isEmpty()) {
+						lyricDisplay = lyricMessage;
+					} else {
+						lyricDisplay = "";
+					}
+					
+					if (!lyricDisplay.isEmpty()) {
+						ActionBarAPI.sendToAll("[" + ChatColor.GREEN + "Lyric" + ChatColor.WHITE + "] " + lyricDisplay);
+					}
 				}
 			}
-		}, 0L, 20L);
+		}, 0L, 5L);
 		ActionBarAPI.run();
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.performCommand("music u");
-			p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+			if (getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
+				getMusicThread().getSongPlayer().addPlayer(p);
+			} else {
+				getMusicThread().getSongPlayer().removePlayer(p);
+			}
 		}
 	}
 

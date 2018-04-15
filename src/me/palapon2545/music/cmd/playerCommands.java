@@ -28,90 +28,57 @@ public class playerCommands implements CommandExecutor {
 				message += " ";
 			message += part;
 		}
-		// Toggle between mute and un-mute
 		if (cmd.getName().equalsIgnoreCase("music") || cmd.getName().equalsIgnoreCase("SMDMusic:music")) {
 			if (sender instanceof Player) {
 				if (args.length == 0) {
 					String valve = pl.getConfig().getString("Players." + player.getName() + ".music");
+					String message1 = "";
+					String message2 = "";
 					if (valve != null && valve.equalsIgnoreCase("false")) {
-						player.sendMessage(ChatColor.WHITE + "You " + ChatColor.GREEN + ChatColor.BOLD + "UNMUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ ChatColor.BOLD + "/music " + ChatColor.YELLOW + "again to " + ChatColor.RED
-								+ "mute.");
-						ActionBarAPI.send(player, ChatColor.WHITE + "You " + ChatColor.GREEN + "UNMUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ "/music " + ChatColor.YELLOW + "again to " + ChatColor.RED + "mute.");
-						player.playSound(player.getLocation(), Sound.ENTITY_ITEMFRAME_REMOVE_ITEM, 1, 1);
-						pluginMain.getMusicThread().getSongPlayer().addPlayer(player);
+						// SWTICH TO TRUE
 						pl.getConfig().set("Players." + player.getName() + ".music", "true");
-						pl.saveConfig();
+						pluginMain.getMusicThread().getSongPlayer().addPlayer(player);
+						message1 = ChatColor.GREEN + "" + ChatColor.BOLD + "UNMUTED";
+						message2 = ChatColor.RED + "" + ChatColor.BOLD + "MUTED";
 					} else {
-						player.sendMessage(ChatColor.WHITE + "You " + ChatColor.RED + ChatColor.BOLD + "MUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ ChatColor.BOLD + "/music " + ChatColor.YELLOW + "again to " + ChatColor.GREEN
-								+ "unmute");
-						ActionBarAPI.send(player, ChatColor.WHITE + "You " + ChatColor.RED + "MUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ "/music " + ChatColor.YELLOW + "again to " + ChatColor.GREEN + "unmute.");
-						player.playSound(player.getLocation(), Sound.ENTITY_ITEMFRAME_ADD_ITEM, 1, 1);
-						pluginMain.getMusicThread().getSongPlayer().removePlayer(player);
+						// SWTICH TO FALSE
 						pl.getConfig().set("Players." + player.getName() + ".music", "false");
-						pl.saveConfig();
+						pluginMain.getMusicThread().getSongPlayer().removePlayer(player);
+						message1 = ChatColor.RED + "" + ChatColor.BOLD + "MUTED";
+						message2 = ChatColor.GREEN + "" + ChatColor.BOLD + "UNMUTED";
 					}
-				}
-				if (args.length != 0) {
+
+					pl.saveConfig();
+					player.sendMessage("You " + message1 + ChatColor.WHITE + " noteblock song.");
+					player.sendMessage("Type " + ChatColor.YELLOW + "/music " + ChatColor.WHITE + "to " + message2
+							+ ChatColor.WHITE + ".");
+				} else if (args.length != 0) {
 					if (args[0].equalsIgnoreCase("mute") || args[0].equalsIgnoreCase("m")) {
-						player.sendMessage(ChatColor.WHITE + "You " + ChatColor.RED + ChatColor.BOLD + "MUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ ChatColor.BOLD + "/music " + ChatColor.YELLOW + "again to " + ChatColor.GREEN
-								+ "unmute");
-						ActionBarAPI.send(player, ChatColor.WHITE + "You " + ChatColor.RED + "MUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ "/music " + ChatColor.YELLOW + "again to " + ChatColor.GREEN + "unmute.");
-						player.playSound(player.getLocation(), Sound.ENTITY_ITEMFRAME_ADD_ITEM, 1, 1);
-						pluginMain.getMusicThread().getSongPlayer().removePlayer(player);
 						pl.getConfig().set("Players." + player.getName() + ".music", "false");
-						pl.saveConfig();
-					}
-					if (args[0].equalsIgnoreCase("unmute") || args[0].equalsIgnoreCase("u")) {
-						player.sendMessage(ChatColor.WHITE + "You " + ChatColor.GREEN + ChatColor.BOLD + "UNMUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ ChatColor.BOLD + "/music " + ChatColor.YELLOW + "again to " + ChatColor.RED
-								+ "mute.");
-						ActionBarAPI.send(player, ChatColor.WHITE + "You " + ChatColor.GREEN + "UNMUTED "
-								+ ChatColor.WHITE + "Music System." + ChatColor.YELLOW + " Type " + ChatColor.GOLD
-								+ "/music " + ChatColor.YELLOW + "again to " + ChatColor.RED + "mute.");
-						player.playSound(player.getLocation(), Sound.ENTITY_ITEMFRAME_REMOVE_ITEM, 1, 1);
-						// p.playSound(p.getLocation(), Sound.<SOUND>, <VOLUME>,
-						// <PITCH>);
-						pluginMain.getMusicThread().getSongPlayer().addPlayer(player);
+						pluginMain.getMusicThread().getSongPlayer().removePlayer(player);
+						player.sendMessage("You " + ChatColor.RED + ChatColor.BOLD + "MUTED " + ChatColor.WHITE
+								+ "noteblock song.");
+						player.sendMessage("Type " + ChatColor.YELLOW + "/music " + ChatColor.WHITE + "to "
+								+ ChatColor.GREEN + ChatColor.BOLD + "UNMUTED" + ChatColor.WHITE + ".");
+					} else if (args[0].equalsIgnoreCase("unmute") || args[0].equalsIgnoreCase("u")) {
 						pl.getConfig().set("Players." + player.getName() + ".music", "true");
-						pl.saveConfig();
-					}
-					if (args[0].equalsIgnoreCase("status")) {
-						if (args.length == 2) {
-							String p = args[1];
-							Player player2 = Bukkit.getPlayer(p);
-							String playerName = player2.getName();
-							if (player2.isOnline()) {
-								if (pl.getConfig().getString("Players." + playerName + ".music")
-										.equalsIgnoreCase("false")) {
-									player.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Player "
-											+ playerName + " is " + ChatColor.RED + "mute");
-								}
-								if (pl.getConfig().getString("Players." + playerName + ".music")
-										.equalsIgnoreCase("true")) {
-									player.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Player "
-											+ playerName + " is " + ChatColor.GREEN + "unmute");
-								}
-							} else {
-								player.sendMessage(playerName + " not found.");
+						pluginMain.getMusicThread().getSongPlayer().removePlayer(player);
+						player.sendMessage("You " + ChatColor.GREEN + ChatColor.BOLD + "UNMUTED " + ChatColor.WHITE
+								+ "noteblock song.");
+						player.sendMessage("Type " + ChatColor.YELLOW + "/music " + ChatColor.WHITE + "to "
+								+ ChatColor.RED + ChatColor.BOLD + "MUTED" + ChatColor.WHITE + ".");
+					} else if (args[0].equalsIgnoreCase("status")) {
+						String targetPlayer = player.getName();
+						if (args.length >= 2 && !args[2].isEmpty()) {
+							if (Bukkit.getPlayer(args[2]) != null) {
+								targetPlayer = Bukkit.getPlayer(args[2]).getName();
 							}
-						} else if (args.length!=2) {
-							player.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type: " + ChatColor.GREEN + "/music status [Player]");
 						}
-					}
-					if (args[0].equalsIgnoreCase("info")) {
+
+						String musicBoolean = pl.getConfig().getString("Players." + targetPlayer + ".music");
+						player.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Player " + targetPlayer
+								+ " is " + musicBoolean + ".");
+					} else if (args[0].equalsIgnoreCase("info")) {
 						String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
 						String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
 						String description = pluginMain.getMusicThread().getCurrentSong().getDescription();
@@ -132,10 +99,7 @@ public class playerCommands implements CommandExecutor {
 						player.sendMessage(ChatColor.DARK_GREEN + "Description:");
 						player.sendMessage(ChatColor.GREEN + description);
 						player.sendMessage(ChatColor.STRIKETHROUGH + "----------------------------");
-					}
-					if (!args[0].equalsIgnoreCase("info") && !args[0].equalsIgnoreCase("status")
-							&& !args[0].equalsIgnoreCase("mute") && !args[0].equalsIgnoreCase("unmute")
-							&& !args[0].equalsIgnoreCase("u") && !args[0].equalsIgnoreCase("m")) {
+					} else {
 						player.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type: " + ChatColor.GREEN
 								+ "/music [mute/unmute/info/status] [args]");
 					}

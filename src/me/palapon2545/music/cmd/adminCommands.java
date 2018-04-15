@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
 import me.palapon2545.music.pluginMain;
 import me.palapon2545.music.NoteblockAPI.Song;
 import me.palapon2545.music.api.MusicThread;
@@ -55,16 +56,19 @@ public class adminCommands implements CommandExecutor {
 							if (args.length != 1) {
 								for (Player p : Bukkit.getOnlinePlayers()) {
 									pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
-									pluginMain.getMusicThread().trySetSong(args[1]);
 								}
+								message = "";
+								for (int i = 1; i != args.length; i++)
+									message += args[i] + " ";
+								pluginMain.getMusicThread().trySetSong(message);
 							}
 						}
 					}
 					if (args[0].equalsIgnoreCase("random")) {
 						for (Player p : Bukkit.getOnlinePlayers()) {
 							pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
-							pluginMain.getMusicThread().randomSong();
 						}
+						pluginMain.getMusicThread().randomSong();
 					}
 					if (args[0].equalsIgnoreCase("reload")) {
 						Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("SMDMusic");
