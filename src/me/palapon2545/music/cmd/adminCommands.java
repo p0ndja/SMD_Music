@@ -25,7 +25,7 @@ public class adminCommands implements CommandExecutor {
 				message += " ";
 			message += part;
 		}
-		
+
 		if (cmd.getName().equalsIgnoreCase("musicadmin")) {
 			if (sender.isOp() || sender.hasPermission("music.admin")) {
 				if (args.length == 0) {
@@ -33,35 +33,38 @@ public class adminCommands implements CommandExecutor {
 					sender.sendMessage(ChatColor.STRIKETHROUGH + "-----------------" + ChatColor.GOLD + "["
 							+ ChatColor.YELLOW + "Music" + ChatColor.GOLD + "]" + ChatColor.WHITE
 							+ ChatColor.STRIKETHROUGH + "-----------------");
-					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin random'" + ChatColor.GOLD + " Random music");
-					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin play [Song]'" + ChatColor.GOLD
-							+ " Play [Song] music (Use _ to space)");
+					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin random'" + ChatColor.GOLD + " Random new song");
 					sender.sendMessage(
-							ChatColor.YELLOW + "'/musicadmin list'" + ChatColor.GOLD + " List of music that available");
-					sender.sendMessage(
-							ChatColor.YELLOW + "'/musicadmin forcemute'" + ChatColor.GOLD + " Force [player] to mute");
+							ChatColor.YELLOW + "'/musicadmin play [Song]'" + ChatColor.GOLD + " Play specific song");
+					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin list'" + ChatColor.GOLD
+							+ " List of song(s) that available");
+					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin forcemute'" + ChatColor.GOLD
+							+ " Force target player to mute song");
 					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin forceunmute'" + ChatColor.GOLD
-							+ " Force [player] to unmute");
+							+ " Force target player to unmute song");
 					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin forceallmute'" + ChatColor.GOLD
-							+ " Force all online player to mute");
+							+ " Force all online player to mute song");
 					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin forceallunmute'" + ChatColor.GOLD
-							+ " Force all online player to unmute");
+							+ " Force all online player to unmute song");
 					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
 				} else {
 					if (args[0].equalsIgnoreCase("play")) {
-						if (args.length == 1) {
+						if (args.length < 1) {
 							sender.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type:" + ChatColor.GREEN
-									+ "/musicadmin play [Song] ('_' = space)");
+									+ "/musicadmin play [Song]");
 						} else {
-							if (args.length != 1) {
-								for (Player p : Bukkit.getOnlinePlayers()) {
-									pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
-								}
-								message = "";
-								for (int i = 1; i != args.length; i++)
-									message += args[i] + " ";
-								pluginMain.getMusicThread().trySetSong(message);
+							for (Player p : Bukkit.getOnlinePlayers()) {
+								pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
 							}
+							message = "";
+							for (int i = 1; i != args.length; i++) {
+								if (i == (args.length - 1)) {
+									message += args[i];
+								} else {
+									message += args[i] + " ";
+								}
+							}
+							pluginMain.getMusicThread().trySetSong(message);
 						}
 					}
 					if (args[0].equalsIgnoreCase("random")) {
@@ -79,8 +82,8 @@ public class adminCommands implements CommandExecutor {
 						pluginMain.getMusicThread().getSongPlayer().setPlaying(false);
 						plugin.onDisable();
 						Bukkit.getServer().getScheduler().cancelTasks(plugin);
-					    plugin.onEnable();
-						
+						plugin.onEnable();
+
 					}
 					if (args[0].equalsIgnoreCase("forcemute")) {
 						if (args.length == 2) {
@@ -94,7 +97,7 @@ public class adminCommands implements CommandExecutor {
 								sender.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Player "
 										+ ChatColor.YELLOW + args[1] + ChatColor.GRAY + "not found.");
 							}
-						} else if (args.length != 2) {
+						} else {
 							sender.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type: " + ChatColor.YELLOW
 									+ "/musicadmin forcemute [player]");
 						}
@@ -111,7 +114,7 @@ public class adminCommands implements CommandExecutor {
 								sender.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Player "
 										+ ChatColor.YELLOW + args[1] + ChatColor.GRAY + "not found.");
 							}
-						} else if (args.length != 2) {
+						} else {
 							sender.sendMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Type: " + ChatColor.YELLOW
 									+ "/musicadmin forceunmute [player]");
 						}
@@ -131,36 +134,30 @@ public class adminCommands implements CommandExecutor {
 						}
 					}
 					if (args[0].equalsIgnoreCase("list")) {
-						if (sender.isOp()) {
-							StringBuffer buf = new StringBuffer();
-							Player p = (Player) sender;
-							p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
+						StringBuffer buf = new StringBuffer();
+						Player p = (Player) sender;
+						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
+						buf.append(ChatColor.GOLD + "" + ChatColor.BOLD + "Loaded songs : ");
+						Song[] songs = pluginMain.getMusicThread().getSongs();
 
-							buf.append(ChatColor.GOLD + "" + ChatColor.BOLD + "Loaded songs : ");
+						for (int i = 0; i < songs.length; i++) {
 
-							Song[] songs = pluginMain.getMusicThread().getSongs();
-
-							for (int i = 0; i < songs.length; i++) {
-
-								if (i % 2 == 0) {
-									buf.append(ChatColor.YELLOW);
-								}
-
-								buf.append(songs[i].getTitle());
-
-								if (i < songs.length - 1) {
-									buf.append(", ");
-								}
-
+							if (i % 2 == 0) {
+								buf.append(ChatColor.YELLOW);
 							}
 
-							sender.sendMessage(buf.toString());
+							buf.append(songs[i].getTitle());
 
-						} else {
-							sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
+							if (i < songs.length - 1) {
+								buf.append(", ");
+							}
+
 						}
+						sender.sendMessage(buf.toString());
 					}
 				}
+			} else {
+				sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
 			}
 		}
 		return true;

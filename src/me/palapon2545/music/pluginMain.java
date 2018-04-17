@@ -27,9 +27,13 @@ public class pluginMain extends JavaPlugin {
 	public static pluginMain instance;
 	public static HashMap<String, ArrayList<SongPlayer>> playingSongs = new HashMap<String, ArrayList<SongPlayer>>();
 	public static HashMap<String, Byte> playerVolume = new HashMap<String, Byte>();
+	
+	public static boolean isThisSongCheckLyric = false;
+	public static boolean isThisSongHaveLyric = false;
 
 
 	public void onEnable() {
+		ActionBarAPI.run();
 		File userfiles;
 		File lyricfiles;
         try {
@@ -63,13 +67,6 @@ public class pluginMain extends JavaPlugin {
 		s.scheduleSyncRepeatingTask(this, new Runnable() {
 			@Override
 			public void run() {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (getConfig().getString("Players." + p.getName() + ".music") == "true") {
-						getMusicThread().getSongPlayer().addPlayer(p);
-					} else {
-						getMusicThread().getSongPlayer().removePlayer(p);
-					}
-				}
 				String currentSong = mt.getCurrentSong().getTitle();
 				short length = mt.getCurrentSong().getLength();
 				short nowLength = mt.getSongPlayer().getTick();
@@ -77,27 +74,52 @@ public class pluginMain extends JavaPlugin {
 				
 				long lengthSecond = ((long) length) / ((long) speed);
 				long nowLengthSecond = ((long) nowLength) / ((long) speed);
-
-				File lyricsFolder = new File(getDataFolder(), File.separator + "lyric/");
-				File lyricsFile = new File(lyricsFolder, File.separator + currentSong + ".txt");
-				if (lyricsFile.exists()) {
-					FileConfiguration lyricsData = YamlConfiguration.loadConfiguration(lyricsFile);
-					String lyricDisplay = "";
-					String lyricMessage = lyricsData.getString(nowLengthSecond + "");
-					
-					if (!lyricMessage.isEmpty()) {
-						lyricDisplay = lyricMessage;
+				
+				if (isThisSongCheckLyric == false) {
+					File lyricsFolder = new File(getDataFolder(), File.separator + "lyric/");
+					File lyricsFile = new File(lyricsFolder, File.separator + currentSong + ".txt");
+					if (lyricsFile.exists()) {
+						isThisSongCheckLyric = true;
+						isThisSongHaveLyric = true;
 					} else {
-						lyricDisplay = "";
+						isThisSongCheckLyric = false;
+						isThisSongHaveLyric = true;
 					}
-					
-					if (!lyricDisplay.isEmpty()) {
-						ActionBarAPI.sendToAll("[" + ChatColor.GREEN + "Lyric" + ChatColor.WHITE + "] " + lyricDisplay);
+				} else {
+					if (isThisSongHaveLyric == true) {
+						File lyricsFolder = new File(getDataFolder(), File.separator + "lyric/");
+						File lyricsFile = new File(lyricsFolder, File.separator + currentSong + ".txt");
+						FileConfiguration lyricsData = YamlConfiguration.loadConfiguration(lyricsFile);
+						String lyricDisplay = "";
+						String lyricMessage = lyricsData.getString(nowLengthSecond + "");
+						
+						if (!lyricMessage.isEmpty()) {
+							lyricDisplay = lyricMessage;
+						} else {
+							lyricDisplay = "";
+						}
+						
+						if (!lyricDisplay.isEmpty()) {
+							ActionBarAPI.sendToAll("[" + ChatColor.GREEN + "Lyric" + ChatColor.WHITE + "] " + lyricDisplay);
+						}
+					} else {
+						//NOTHING
 					}
 				}
 			}
-		}, 0L, 5L);
-		ActionBarAPI.run();
+		}, 0L, 10L);
+		s.scheduleSyncRepeatingTask(this, new Runnable() {
+			@Override
+			public void run() {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (getConfig().getString("Players." + p.getName() + ".music") == "true") {
+						getMusicThread().getSongPlayer().addPlayer(p);
+					} else {
+						getMusicThread().getSongPlayer().removePlayer(p);
+					}
+				}
+			}
+		}, 0L, 10L);
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
 				getMusicThread().getSongPlayer().addPlayer(p);

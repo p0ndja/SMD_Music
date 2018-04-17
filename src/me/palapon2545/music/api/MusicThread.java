@@ -68,6 +68,7 @@ public class MusicThread implements Runnable {
 			}
 
 			songs.add(song);
+			Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Add song " + song.getTitle() + ".");
 		}
 
 		if ((long) songs.size() < 1) {
@@ -99,7 +100,6 @@ public class MusicThread implements Runnable {
 		}
 		songPlayer.setPlaying(false);
 		nextSong(r);
-
 		String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
 		String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
 		if (title.isEmpty()) {
@@ -108,16 +108,14 @@ public class MusicThread implements Runnable {
 		if (author.isEmpty()) {
 			author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 		}
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			ActionBarAPI.send(p,
-					ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]" + ChatColor.GRAY + ": "
-							+ ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - " + ChatColor.GOLD
-							+ ChatColor.BOLD + author);
-		}
+		ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+				+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
+				+ ChatColor.GOLD + ChatColor.BOLD + author);
+		pluginMain.isThisSongCheckLyric = false;
+		pluginMain.isThisSongHaveLyric = false;
 	}
 
 	public boolean trySetSong(String songName) {
-		songName = songName.replaceAll("_", " ");
 		for (Song song : loadedSongs) {
 			if (song.getTitle().equalsIgnoreCase(songName)) {
 				songPlayer.setPlaying(false);
@@ -137,7 +135,8 @@ public class MusicThread implements Runnable {
 				ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
 						+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
 						+ ChatColor.GOLD + ChatColor.BOLD + author);
-
+				pluginMain.isThisSongCheckLyric = false;
+				pluginMain.isThisSongHaveLyric = false;
 				return true;
 			}
 		}
