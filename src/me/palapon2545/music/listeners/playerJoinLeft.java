@@ -19,15 +19,20 @@ public class playerJoinLeft implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		pl.getConfig().set("Players." + p.getName() + ".music", "true");
-		pl.saveConfig();
-		pluginMain.getMusicThread().getSongPlayer().addPlayer(p);
+		String noteblockSetting = pl.getConfig().getString("Players." + p.getName() + ".music");
+		if (noteblockSetting == null || !p.hasPlayedBefore()) {
+			pl.getConfig().set("Players." + p.getName() + ".music", "true");
+			pl.saveConfig();
+		} else {
+			if (noteblockSetting.equalsIgnoreCase("true"))
+				pluginMain.getMusicThread().getSongPlayer().addPlayer(p);
+			else pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
+		}
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		Player p = e.getPlayer();
-		pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
+		pluginMain.getMusicThread().getSongPlayer().removePlayer(e.getPlayer());
 		pl.saveConfig();
 	}
 }

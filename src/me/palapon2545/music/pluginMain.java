@@ -48,12 +48,12 @@ public class pluginMain extends JavaPlugin {
         } catch(SecurityException e) {
             return;
         }
-		Bukkit.broadcastMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "SMDMusic System: " + ChatColor.GREEN
+		Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "SMDMusic System: " + ChatColor.GREEN
 				+ ChatColor.BOLD + "Enable");
 		instance = this;
 		mt = new MusicThread(getSongFolder());
 		if (mt.getSongs().length == 0) {
-			getLogger().warning("Alert! No songs found.");
+			getLogger().warning("Music> Alert! No songs found.");
 			Bukkit.getServer().getPluginManager().disablePlugin(this);
 		} else {
 			Bukkit.getScheduler().runTaskTimer(this, mt, 0, 20);
@@ -112,7 +112,7 @@ public class pluginMain extends JavaPlugin {
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (getConfig().getString("Players." + p.getName() + ".music") == "true") {
+					if (getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
 						getMusicThread().getSongPlayer().addPlayer(p);
 					} else {
 						getMusicThread().getSongPlayer().removePlayer(p);
@@ -120,18 +120,11 @@ public class pluginMain extends JavaPlugin {
 				}
 			}
 		}, 0L, 10L);
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			if (getConfig().getString("Players." + p.getName() + ".music").equalsIgnoreCase("true")) {
-				getMusicThread().getSongPlayer().addPlayer(p);
-			} else {
-				getMusicThread().getSongPlayer().removePlayer(p);
-			}
-		}
 	}
 
 	public void onDisable() {
 		getMusicThread().getSongPlayer().setPlaying(false);
-		Bukkit.broadcastMessage(ChatColor.BLUE + "Server> " + ChatColor.GRAY + "SMDMusic System: " + ChatColor.RED
+		Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "SMDMusic System: " + ChatColor.RED
 					+ ChatColor.BOLD + "Disable");
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 10, 0);

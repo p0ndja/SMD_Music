@@ -1,7 +1,7 @@
 name: SMDMusic
 main: me.palapon2545.music.pluginMain
 description: Make your own song and Share to player in server!
-version: 1.0.2
+version: 1.0.3
 authors: [SMD_SSG_PJ, Catallena_, DDLoveDew]
 website: https://github.com/palapon2545/SMD_Music
 commands:
