@@ -46,7 +46,7 @@ public class adminCommands implements CommandExecutor {
 							+ " Force all online player to mute song");
 					sender.sendMessage(ChatColor.YELLOW + "'/musicadmin forceallunmute'" + ChatColor.GOLD
 							+ " Force all online player to unmute song");
-					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
+					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 				} else {
 					if (args[0].equalsIgnoreCase("play")) {
 						if (args.length < 1) {
@@ -136,7 +136,7 @@ public class adminCommands implements CommandExecutor {
 					if (args[0].equalsIgnoreCase("list")) {
 						StringBuffer buf = new StringBuffer();
 						Player p = (Player) sender;
-						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
+						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 						buf.append(ChatColor.GOLD + "" + ChatColor.BOLD + "Loaded songs : ");
 						Song[] songs = pluginMain.getMusicThread().getSongs();
 

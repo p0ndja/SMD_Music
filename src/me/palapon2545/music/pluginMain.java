@@ -127,7 +127,7 @@ public class pluginMain extends JavaPlugin {
 		Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "SMDMusic System: " + ChatColor.RED
 					+ ChatColor.BOLD + "Disable");
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 10, 0);
+			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 0);
 			getMusicThread().getSongPlayer().removePlayer(p);
 		}
 	}

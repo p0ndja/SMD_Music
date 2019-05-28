@@ -7,17 +7,17 @@ public class Instrument {
 	public static Sound getInstrument(byte instrument) {
 		switch (instrument) {
 		case 0:
-			return Sound.BLOCK_NOTE_HARP;
+			return Sound.BLOCK_NOTE_BLOCK_HARP;
 		case 1:
-			return Sound.BLOCK_NOTE_BASS;
+			return Sound.BLOCK_NOTE_BLOCK_BASS;
 		case 2:
-			return Sound.BLOCK_NOTE_BASEDRUM;
+			return Sound.BLOCK_NOTE_BLOCK_BASEDRUM;
 		case 3:
-			return Sound.BLOCK_NOTE_SNARE;
+			return Sound.BLOCK_NOTE_BLOCK_SNARE;
 		case 4:
-			return Sound.BLOCK_NOTE_HAT;
+			return Sound.BLOCK_NOTE_BLOCK_HAT;
 		case 5:
-			return Sound.BLOCK_NOTE_PLING;
+			return Sound.BLOCK_NOTE_BLOCK_PLING;
 		case 6:
 			return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 		case 7:
@@ -25,7 +25,7 @@ public class Instrument {
 		case 8:
 			return Sound.ENTITY_CHICKEN_EGG;
 		default:
-			return Sound.BLOCK_NOTE_PLING;
+			return Sound.BLOCK_NOTE_BLOCK_PLING;
 		}
 	}
 
