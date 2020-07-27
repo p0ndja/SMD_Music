@@ -12,8 +12,9 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
-import me.palapon2545.music.api.tools.ActionBarAPI;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class MusicThread implements Runnable {
 
@@ -108,9 +109,11 @@ public class MusicThread implements Runnable {
 		if (author.isEmpty()) {
 			author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 		}
-		ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
 				+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
-				+ ChatColor.GOLD + ChatColor.BOLD + author);
+				+ ChatColor.GOLD + ChatColor.BOLD + author));
+		}
 		pluginMain.isThisSongCheckLyric = false;
 		pluginMain.isThisSongHaveLyric = false;
 	}
@@ -132,9 +135,11 @@ public class MusicThread implements Runnable {
 					author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 				}
 
-				ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
-						+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
-						+ ChatColor.GOLD + ChatColor.BOLD + author);
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+							+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
+							+ ChatColor.GOLD + ChatColor.BOLD + author));
+				}
 				pluginMain.isThisSongCheckLyric = false;
 				pluginMain.isThisSongHaveLyric = false;
 				return true;

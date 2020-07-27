@@ -14,12 +14,14 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
 import me.palapon2545.music.api.MusicThread;
-import me.palapon2545.music.api.tools.ActionBarAPI;
 import me.palapon2545.music.cmd.adminCommands;
 import me.palapon2545.music.cmd.playerCommands;
 import me.palapon2545.music.listeners.playerJoinLeft;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
+import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
 
 public class pluginMain extends JavaPlugin {
 
@@ -33,7 +35,6 @@ public class pluginMain extends JavaPlugin {
 
 
 	public void onEnable() {
-		ActionBarAPI.run();
 		File userfiles;
 		File lyricfiles;
         try {
@@ -100,7 +101,9 @@ public class pluginMain extends JavaPlugin {
 						}
 						
 						if (!lyricDisplay.isEmpty()) {
-							ActionBarAPI.sendToAll("[" + ChatColor.GREEN + "Lyric" + ChatColor.WHITE + "] " + lyricDisplay);
+							for (Player p : Bukkit.getOnlinePlayers()) {
+								p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("[" + ChatColor.GREEN + "Lyric" + ChatColor.WHITE + "] " + lyricDisplay));	
+							}
 						}
 					} else {
 						//NOTHING
