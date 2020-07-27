@@ -4,6 +4,7 @@ description: Make your own song and Share to player in server!
 version: 1.1
 api-version: 1.16
 authors: [SMD_SSG_PJ, Catallena_, DDLoveDew]
+depend: [NoteBlockAPI]
 website: https://github.com/palapon2545/SMD_Music
 commands:
   musicadmin:
