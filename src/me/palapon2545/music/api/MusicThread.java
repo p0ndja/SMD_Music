@@ -8,18 +8,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.palapon2545.music.pluginMain;
-import me.palapon2545.music.NoteblockAPI.NBSDecoder;
-import me.palapon2545.music.NoteblockAPI.RadioSongPlayer;
-import me.palapon2545.music.NoteblockAPI.Song;
-import me.palapon2545.music.NoteblockAPI.SongPlayer;
-import me.palapon2545.music.api.tools.ActionBarAPI;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class MusicThread implements Runnable {
 
 	private SongPlayer songPlayer;
 	private Song[] loadedSongs;
 	private int currentSong;
+	
+	public List<Song> songs = new ArrayList<Song>();
 
 	public MusicThread(File songFolder) {
 		currentSong = 0;
@@ -49,7 +52,6 @@ public class MusicThread implements Runnable {
 
 	private void loadSongs(File songFolder) {
 		File[] files = songFolder.listFiles();
-		List<Song> songs = new ArrayList<Song>();
 
 		pluginMain.getInstance().getLogger().info("Loading songs from " + songFolder.getPath());
 		Bukkit.broadcastMessage(
@@ -60,10 +62,7 @@ public class MusicThread implements Runnable {
 			try {
 				song = NBSDecoder.parse(file);
 			} catch (Exception e) {
-
-				pluginMain.getInstance().getLogger()
-						.severe("ERROR: Failed to load song " + file.getPath() + "... " + e.getMessage());
-
+				pluginMain.getInstance().getLogger().severe("ERROR: Failed to load song " + file.getPath() + "... " + e.getMessage());
 				continue;
 			}
 
@@ -74,7 +73,7 @@ public class MusicThread implements Runnable {
 		if ((long) songs.size() < 1) {
 			Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("SMDMusic"));
 		}
-		pluginMain.getInstance().getLogger().info("Loaded " + songs.size() + " songs!");
+		pluginMain.getInstance().getLogger().info("Loaded " + songs.size() + " song(s)!");
 		Bukkit.broadcastMessage(ChatColor.BLUE + "Music> " + ChatColor.GRAY + "Loaded " + ChatColor.YELLOW
 				+ songs.size() + ChatColor.GRAY + " songs!");
 		loadedSongs = songs.toArray(loadedSongs);
@@ -94,25 +93,29 @@ public class MusicThread implements Runnable {
 
 	public void randomSong() {
 		Random rand = new Random();
-		int r = rand.nextInt(30);
+		int r = rand.nextInt(songs.size());
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			songPlayer.removePlayer(p); // Original is "add" not remove.
+			songPlayer.removePlayer(p);
 		}
 		songPlayer.setPlaying(false);
 		nextSong(r);
-		String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
-		String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
-		if (title.isEmpty()) {
-			title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
-		}
-		if (author.isEmpty()) {
-			author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
-		}
-		ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+		
+		String title = (!(pluginMain.getMusicThread().getCurrentSong().getTitle()).isEmpty()) ? pluginMain.getMusicThread().getCurrentSong().getTitle() : ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
+		String author = (!(pluginMain.getMusicThread().getCurrentSong().getAuthor()).isEmpty()) ? pluginMain.getMusicThread().getCurrentSong().getAuthor() : ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
+		
+		sendActionBarToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
 				+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
 				+ ChatColor.GOLD + ChatColor.BOLD + author);
+		
+		
 		pluginMain.isThisSongCheckLyric = false;
 		pluginMain.isThisSongHaveLyric = false;
+	}
+	
+	public void sendActionBarToAll(String message) {
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+		}
 	}
 
 	public boolean trySetSong(String songName) {
@@ -122,19 +125,13 @@ public class MusicThread implements Runnable {
 				songPlayer = new RadioSongPlayer(song);
 				songPlayer.setPlaying(true);
 
-				String title = pluginMain.getMusicThread().getCurrentSong().getTitle();
-				String author = pluginMain.getMusicThread().getCurrentSong().getAuthor();
+				String title = (!(pluginMain.getMusicThread().getCurrentSong().getTitle()).isEmpty()) ? pluginMain.getMusicThread().getCurrentSong().getTitle() : ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
+				String author = (!(pluginMain.getMusicThread().getCurrentSong().getAuthor()).isEmpty()) ? pluginMain.getMusicThread().getCurrentSong().getAuthor() : ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
 
-				if (title.isEmpty()) {
-					title = ChatColor.GRAY + "Unknown Song" + ChatColor.RESET;
-				}
-				if (author.isEmpty()) {
-					author = ChatColor.GRAY + "Unknown Author" + ChatColor.RESET;
-				}
-
-				ActionBarAPI.sendToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
+				sendActionBarToAll(ChatColor.WHITE + "[" + ChatColor.YELLOW + "Song" + ChatColor.WHITE + "]"
 						+ ChatColor.GRAY + ": " + ChatColor.WHITE + ChatColor.BOLD + title + ChatColor.WHITE + " - "
 						+ ChatColor.GOLD + ChatColor.BOLD + author);
+				
 				pluginMain.isThisSongCheckLyric = false;
 				pluginMain.isThisSongHaveLyric = false;
 				return true;
