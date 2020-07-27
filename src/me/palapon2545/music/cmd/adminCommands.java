@@ -68,9 +68,6 @@ public class adminCommands implements CommandExecutor {
 						}
 					}
 					if (args[0].equalsIgnoreCase("random")) {
-						for (Player p : Bukkit.getOnlinePlayers()) {
-							pluginMain.getMusicThread().getSongPlayer().removePlayer(p);
-						}
 						pluginMain.getMusicThread().randomSong();
 					}
 					if (args[0].equalsIgnoreCase("reload")) {
@@ -83,6 +80,10 @@ public class adminCommands implements CommandExecutor {
 						plugin.onDisable();
 						Bukkit.getServer().getScheduler().cancelTasks(plugin);
 						plugin.onEnable();
+						
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							p.performCommand("music u");
+						}
 
 					}
 					if (args[0].equalsIgnoreCase("forcemute")) {
