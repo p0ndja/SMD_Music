@@ -8,10 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.palapon2545.music.pluginMain;
-import me.palapon2545.music.NoteblockAPI.NBSDecoder;
-import me.palapon2545.music.NoteblockAPI.RadioSongPlayer;
-import me.palapon2545.music.NoteblockAPI.Song;
-import me.palapon2545.music.NoteblockAPI.SongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
 import me.palapon2545.music.api.tools.ActionBarAPI;
 import net.md_5.bungee.api.ChatColor;
 

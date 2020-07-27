@@ -14,7 +14,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import me.palapon2545.music.NoteblockAPI.SongPlayer;
+import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
 import me.palapon2545.music.api.MusicThread;
 import me.palapon2545.music.api.tools.ActionBarAPI;
 import me.palapon2545.music.cmd.adminCommands;

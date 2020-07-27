@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import me.palapon2545.music.pluginMain;
-import me.palapon2545.music.NoteblockAPI.Song;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
 import me.palapon2545.music.api.MusicThread;
 
 public class adminCommands implements CommandExecutor {
